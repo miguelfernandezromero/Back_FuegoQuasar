@@ -33,17 +33,21 @@ public class FuegoQuasarService implements IFuegoQuasarService {
 
 	@Autowired
 	Mapper mapper;
+	
+	@Autowired
+	LocationService locationService;
 
 	public ResponseDTO topsecret(SatellitesDTO satellites) {
 		ResponseDTO response = new ResponseDTO();
 
-		// double[][] positions = new double[][]{{ 5.0, -6.0 }};
-		// List<SatelliteDTO> satellite = satellites.getSatellite();
-		// double[] resultado = getLocation(positions, new double [] {100});
+		List<SatelliteDTO> satellite = satellites.getSatellite();
+
+		double[] result = locationService.getLocation(locationService.getCoordinates(),
+				locationService.getDistance(satellite));
 
 		PositionDto position = new PositionDto();
-		position.setX(-487.2859);
-		position.setY(1557.0142);
+		position.setX(result[0]);
+		position.setY(result[1]);
 		response.setPosition(position);
 		response.setMessage(messageService.getMessage(satellites));
 
